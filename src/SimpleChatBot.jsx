@@ -15,7 +15,7 @@ function ChatApp() {
   } = useChatContext();
 
   const [inputMessage, setInputMessage] = React.useState('');
-  const [selectedModels, setSelectedModels] = React.useState(1);
+  const [selectedModels, setSelectedModels] = React.useState(0);
   const [isProcessing, setIsProcessing] = React.useState(false);
   const messagesEndRef = useRef(null);
 
