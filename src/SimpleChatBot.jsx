@@ -66,6 +66,11 @@ function ChatApp() {
     alert('Presets feature - Coming soon!');
   };
 
+  // Safety check for currentChat
+  if (!currentChat) {
+    return <div className="flex items-center justify-center h-screen bg-gray-950 text-white">Loading...</div>;
+  }
+
   return (
     <div className="flex flex-col h-screen bg-gray-950">
       {/* Header */}

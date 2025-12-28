@@ -95,7 +95,7 @@ export const ChatProvider = ({ children }) => {
   }, [settings]);
 
   // Get current chat
-  const currentChat = chats.find(chat => chat.id === currentChatId) || chats[0];
+  const currentChat = chats.find(chat => chat.id === currentChatId) || chats[0] || null;
 
   // Create new chat
   const createChat = useCallback((name = null) => {
@@ -174,13 +174,14 @@ export const ChatProvider = ({ children }) => {
         if (filtered.length > 0) {
           setCurrentChatId(filtered[0].id);
         } else {
+          // Creating a new chat because we archived the last one
           const newChat = createNewChat();
-          setChats([newChat]);
           setCurrentChatId(newChat.id);
+          return [newChat];
         }
       }
 
-      return filtered.length > 0 ? filtered : [createNewChat()];
+      return filtered.length > 0 ? filtered : prev; // Keep at least one chat
     });
 
     console.log('Archived chat:', chatId);
@@ -210,13 +211,14 @@ export const ChatProvider = ({ children }) => {
         if (filtered.length > 0) {
           setCurrentChatId(filtered[0].id);
         } else {
+          // Creating a new chat because we deleted the last one
           const newChat = createNewChat();
-          setChats([newChat]);
           setCurrentChatId(newChat.id);
+          return [newChat];
         }
       }
 
-      return filtered.length > 0 ? filtered : [createNewChat()];
+      return filtered.length > 0 ? filtered : prev; // Keep at least one chat
     });
 
     console.log('Deleted chat:', chatId);
