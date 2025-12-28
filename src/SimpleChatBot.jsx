@@ -82,7 +82,11 @@ function ChatApp() {
     console.error('CurrentChat is null/undefined!');
     console.log('Available chats:', chats);
     console.log('Current chat ID:', currentChatId);
-    return <div className="flex items-center justify-center h-screen bg-gray-950 text-white">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-950">
+        <div className="text-white text-lg">Loading chat...</div>
+      </div>
+    );
   }
 
   console.log('Rendering with currentChat:', currentChat);

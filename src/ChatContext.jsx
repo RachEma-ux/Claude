@@ -94,6 +94,17 @@ export const ChatProvider = ({ children }) => {
     localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
   }, [settings]);
 
+  // Ensure currentChatId always points to a valid chat
+  useEffect(() => {
+    if (chats.length > 0) {
+      const chatExists = chats.some(chat => chat.id === currentChatId);
+      if (!chatExists) {
+        console.warn('Current chat ID not found, switching to first chat');
+        setCurrentChatId(chats[0].id);
+      }
+    }
+  }, [chats, currentChatId]);
+
   // Get current chat
   const currentChat = chats.find(chat => chat.id === currentChatId) || chats[0] || null;
 
@@ -102,15 +113,11 @@ export const ChatProvider = ({ children }) => {
     const newChat = createNewChat(name);
     console.log('Creating new chat:', newChat);
 
-    // Update both chats and currentChatId together
-    setChats(prev => {
-      const updated = [...prev, newChat];
-      console.log('Updated chats:', updated);
-      return updated;
-    });
-
+    // React 18 automatically batches these updates
+    setChats(prev => [...prev, newChat]);
     setCurrentChatId(newChat.id);
-    console.log('Set current chat ID to:', newChat.id);
+
+    console.log('Chat created with ID:', newChat.id);
 
     return newChat;
   }, []);
