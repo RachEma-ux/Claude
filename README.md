@@ -1,6 +1,6 @@
 # Simple Chat Bot
 
-A responsive React chatbot application with proportionality-based layout system, custom send icon, and clean modern design.
+A fully-featured React chatbot application with advanced chat management, proportionality-based layout system, and clean modern design. Features include multiple chat sessions, saving/archiving, analytics, import/export, and more!
 
 ## ⚡ Quick Start - One-Tap Installation
 
@@ -32,29 +32,56 @@ chmod +x install.sh
 
 ## 🚀 Features
 
-### Design Features
+### 💬 Chat Management
+- **Multiple Chats**: Create and manage unlimited chat sessions
+- **Chat Naming**: Auto-generated names with custom rename functionality
+- **Save & Archive**: Save important chats and archive old conversations
+- **Recent Conversations**: Quick access to your 3 most recent chats
+- **Chat Analytics**: View detailed statistics about your chats
+- **Message Count**: Track messages per chat with live updates
+- **Chat Switching**: Seamlessly switch between different conversations
+
+### 💾 Data Management
+- **Auto-Save**: Optional automatic chat saving
+- **Export Chats**: Export individual chats or all data as JSON
+- **Import Chats**: Restore chats from exported JSON files
+- **Local Storage**: All data persisted locally in browser
+- **Data Persistence**: Chats survive page refreshes and browser restarts
+
+### 🎨 Design Features
+- **Hybrid Architecture**: Flexible dropdown system with render props
 - **Custom Send Icon**: Unique SVG arrow design
 - **Proportionality-Based Layout**: All dimensions scale with screen width
 - **Responsive Design**: Optimized for mobile, tablet, and desktop
-- **Modern UI**: Clean, dark-themed interface
+- **Modern UI**: Clean, dark-themed interface with professional dropdowns
 - **Auto-growing Input**: Textarea expands as you type
+- **Save Indicator**: Visual feedback for saved/unsaved status
 
-### Layout Features
-- **Toolbar**: 7 dynamically spaced controls (justify-between)
-- **Input Area**: Textarea above, icons below
-- **Icon Organization**:
-  - Left: Attach, Connect
-  - Right: Voice, Send
+### 🎯 Interactive Features
+- **Menu Dropdown**: Access to all chat management actions
+- **Settings Dropdown**: Configure theme, auto-save, and export/import
+- **File Upload**: Attach multiple files to your messages
+- **Confirmation Dialogs**: Prevent accidental deletions
 - **Keyboard Shortcuts**: Enter to send, Shift+Enter for new line
+- **Click-Outside Detection**: Smart dropdown closing
 
-### Technical Features
-- Built with React 18
+### 📊 Analytics
+- Total chat count
+- Archived chats count
+- Saved chats count
+- Total message count
+- Average messages per chat
+- Oldest and newest chat dates
+
+### 🛠️ Technical Features
+- Built with React 18 and Context API
 - Vite for fast development
 - Tailwind CSS for styling
 - Lucide React icons
 - Proportional scaling system (RATIOS-based)
 - Debounced resize handling (150ms)
 - Mobile-responsive touch targets (min 44px)
+- LocalStorage-based persistence
 
 ---
 
@@ -109,21 +136,25 @@ npm run preview
 
 ```
 Claude/
-├── public/              # Static assets
+├── public/                  # Static assets
 ├── src/
-│   ├── App.jsx         # Main App component
-│   ├── SimpleChatBot.jsx   # Main chatbot component
-│   ├── ChatControlBox.jsx  # Reusable control box (optional)
-│   ├── main.jsx        # Entry point
-│   └── index.css       # Global styles + Tailwind
-├── index.html          # HTML template
-├── package.json        # Dependencies
-├── vite.config.js      # Vite configuration
-├── tailwind.config.js  # Tailwind CSS config (with custom animations)
-├── postcss.config.js   # PostCSS configuration
-├── install.sh          # One-tap install (Unix/Linux/Mac)
-├── install.bat         # One-tap install (Windows)
-└── README.md          # This file
+│   ├── App.jsx             # Main App component
+│   ├── SimpleChatBot.jsx   # Main chatbot component with ChatProvider
+│   ├── ChatContext.jsx     # Chat state management & localStorage
+│   ├── ChatControlBox.jsx  # Hybrid control box with dropdowns
+│   ├── MenuDropdown.jsx    # Menu dropdown with chat actions
+│   ├── SettingsDropdown.jsx # Settings dropdown with theme/export
+│   ├── main.jsx            # Entry point
+│   └── index.css           # Global styles + Tailwind
+├── index.html              # HTML template
+├── package.json            # Dependencies
+├── vite.config.js          # Vite configuration
+├── tailwind.config.js      # Tailwind CSS config
+├── postcss.config.js       # PostCSS configuration
+├── install.sh              # One-tap install (Unix/Linux/Mac)
+├── install.bat             # One-tap install (Windows)
+├── TERMUX_INSTALL.md       # Android/Termux installation guide
+└── README.md               # This file
 ```
 
 ---
@@ -160,31 +191,137 @@ const RATIOS = {
 
 ## 🎯 Component Architecture
 
-### SimpleChatBot (Main Component)
-- Manages message state
-- Handles send functionality
-- Renders chat interface
-- Responsive layout
+### ChatProvider (Context Provider)
+Global state management for all chat-related data:
+```javascript
+<ChatProvider>
+  <ChatApp />
+</ChatProvider>
+```
 
-### ChatControlBox (Reusable Component)
-Available in `src/ChatControlBox.jsx` for custom implementations:
+**Provides:**
+- `currentChat` - Active chat object
+- `chats` - Array of all chats
+- `archivedChats` - Array of archived chats
+- `createChat()` - Create new chat
+- `renameChat()` - Rename chat
+- `saveChat()` - Save chat
+- `archiveChat()` - Archive chat
+- `deleteChat()` - Delete chat
+- `clearChat()` - Clear messages
+- `switchChat()` - Switch active chat
+- `getAnalytics()` - Get chat statistics
+- `exportChatData()` - Export to JSON
+- `importChatData()` - Import from JSON
+
+### SimpleChatBot (Main App)
+- Wraps app in ChatProvider
+- Manages UI state (input, models, processing)
+- Handles message sending
+- Renders chat interface with header
+
+### ChatControlBox (Hybrid Component)
+Accepts dropdown components as render props:
 ```javascript
 <ChatControlBox
-  toolbarItems={<>...custom toolbar...</>}
-  inputLeftControls={<>...left icons...</>}
-  inputRightControls={<>...right icons...</>}
+  // Dropdowns (render props)
+  menuDropdown={<MenuDropdown />}
+  settingsDropdown={<SettingsDropdown />}
+
+  // Callbacks
+  onNewChatClick={createChat}
+  onModelsToggle={toggleModels}
+  onFileUpload={handleFiles}
+
+  // Input props
   inputMessage={message}
   onInputChange={setMessage}
   onSend={handleSend}
+
+  // State props
+  selectedModels={1}
+  messageCount={chat.messageCount}
+  isSaved={chat.isSaved}
 />
 ```
 
-### Custom SendIcon Component
-```javascript
-const SendIcon = ({ className, style }) => (
-  <svg>...</svg>
-);
-```
+### MenuDropdown Component
+Provides chat management actions:
+- New Chat
+- Rename Chat
+- Save Chat
+- Clear Chat
+- Analytics
+- Archive Chat
+- Delete Chat
+- Recent Conversations (with quick switch)
+- View All Saved
+
+### SettingsDropdown Component
+Provides app settings:
+- Auto-Save toggle
+- Theme selection (Light/Dark/Auto)
+- Export Current Chat
+- Export All Data
+- Import Data
+- Clear All Data
+
+### Custom Components
+- **SendIcon**: Unique SVG arrow icon
+- **Button**: Reusable button with variants (ghost, minimal-ghost, default)
+- **useResponsive**: Hook for proportional dimensions
+
+---
+
+## 📖 Usage Guide
+
+### Creating a New Chat
+1. Click the **Plus (+)** button in the toolbar
+2. A new chat is created with auto-generated name
+3. Start messaging immediately
+
+### Managing Chats
+Click the **Menu** button to access:
+- **Rename Chat**: Give your chat a custom name
+- **Save Chat**: Mark chat as saved (green indicator appears)
+- **Clear Chat**: Remove all messages from current chat
+- **Archive Chat**: Move chat to archive
+- **Delete Chat**: Permanently delete chat (with confirmation)
+
+### Recent Conversations
+The Menu dropdown shows your 3 most recent chats:
+- Click any chat to switch to it
+- Shows time since last update
+- Displays message count
+- Currently active chat is highlighted
+
+### Analytics
+Click **Analytics** in the Menu to view:
+- Total chats
+- Archived chats
+- Saved chats
+- Total messages
+- Average messages per chat
+- Date range of your chats
+
+### Settings & Data Management
+Click the **Settings** button to:
+- Toggle **Auto-Save** on/off
+- Change **Theme** (Light/Dark/Auto)
+- **Export Current Chat** as JSON
+- **Export All Data** (all chats + settings)
+- **Import Data** from JSON file
+- **Clear All Data** (requires confirmation)
+
+### File Uploads
+1. Click the **Paperclip** icon
+2. Select one or more files
+3. Files are logged and can be processed by your backend
+
+### Keyboard Shortcuts
+- `Enter` - Send message (desktop)
+- `Shift + Enter` - New line in message
+- Mobile: Enter always creates new line
 
 ---
 
