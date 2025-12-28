@@ -251,12 +251,14 @@ const ChatControlBox = ({
 
   return (
     <div
-      className="bg-gray-900 border border-gray-800 rounded-2xl overflow-visible"
+      className="bg-gray-900 border border-gray-800 rounded-2xl overflow-visible mx-auto"
       style={{
         padding: `${dimensions.containerPadding}px`,
-        margin: `${dimensions.gap}px`,
+        marginTop: `${dimensions.gap}px`,
+        marginBottom: `${dimensions.gap}px`,
         boxSizing: 'border-box',
-        width: `calc(100% - ${dimensions.gap * 2}px)`
+        width: `calc(100% - ${dimensions.gap * 2}px)`,
+        maxWidth: '100%'
       }}
     >
       {/* Toolbar */}

@@ -20,8 +20,10 @@ function ChatApp() {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [currentChat.messages]);
+    if (currentChat?.messages) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [currentChat?.messages]);
 
   const handleSend = () => {
     if (!inputMessage.trim() || selectedModels === 0) return;
@@ -72,7 +74,7 @@ function ChatApp() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-gray-950">
+    <div className="flex flex-col h-screen bg-gray-950 overflow-hidden">
       {/* Header */}
       <div className="flex-shrink-0 bg-gray-900 border-b border-gray-800 px-4 py-3">
         <div className="max-w-3xl mx-auto">
@@ -135,22 +137,24 @@ function ChatApp() {
       </div>
 
       {/* Chat Control Box */}
-      <ChatControlBox
-        menuDropdown={<MenuDropdown />}
-        settingsDropdown={<SettingsDropdown />}
-        onNewChatClick={createChat}
-        onModelsToggle={() => setSelectedModels(prev => prev === 0 ? 1 : 0)}
-        onPresetsClick={handlePresetsClick}
-        onFileUpload={handleFileUpload}
-        inputMessage={inputMessage}
-        onInputChange={setInputMessage}
-        onSend={handleSend}
-        disabled={isProcessing}
-        selectedModels={selectedModels}
-        showBotIcon={true}
-        messageCount={currentChat.messageCount}
-        isSaved={currentChat.isSaved}
-      />
+      <div className="flex-shrink-0 px-2">
+        <ChatControlBox
+          menuDropdown={<MenuDropdown />}
+          settingsDropdown={<SettingsDropdown />}
+          onNewChatClick={createChat}
+          onModelsToggle={() => setSelectedModels(prev => prev === 0 ? 1 : 0)}
+          onPresetsClick={handlePresetsClick}
+          onFileUpload={handleFileUpload}
+          inputMessage={inputMessage}
+          onInputChange={setInputMessage}
+          onSend={handleSend}
+          disabled={isProcessing}
+          selectedModels={selectedModels}
+          showBotIcon={true}
+          messageCount={currentChat.messageCount}
+          isSaved={currentChat.isSaved}
+        />
+      </div>
     </div>
   );
 }
