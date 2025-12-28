@@ -100,9 +100,18 @@ export const ChatProvider = ({ children }) => {
   // Create new chat
   const createChat = useCallback((name = null) => {
     const newChat = createNewChat(name);
-    setChats(prev => [...prev, newChat]);
+    console.log('Creating new chat:', newChat);
+
+    // Update both chats and currentChatId together
+    setChats(prev => {
+      const updated = [...prev, newChat];
+      console.log('Updated chats:', updated);
+      return updated;
+    });
+
     setCurrentChatId(newChat.id);
-    console.log('Created new chat:', newChat.name);
+    console.log('Set current chat ID to:', newChat.id);
+
     return newChat;
   }, []);
 

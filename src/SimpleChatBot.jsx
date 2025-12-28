@@ -10,8 +10,11 @@ import SettingsDropdown from './SettingsDropdown';
 function ChatApp() {
   const {
     currentChat,
+    currentChatId,
+    chats,
     addMessage,
     createChat,
+    saveChat,
   } = useChatContext();
 
   const [inputMessage, setInputMessage] = React.useState('');
@@ -68,10 +71,21 @@ function ChatApp() {
     alert('Presets feature - Coming soon!');
   };
 
+  const handleSaveClick = () => {
+    if (currentChat && !currentChat.isSaved && currentChat.messageCount > 0) {
+      saveChat(currentChat.id);
+    }
+  };
+
   // Safety check for currentChat
   if (!currentChat) {
+    console.error('CurrentChat is null/undefined!');
+    console.log('Available chats:', chats);
+    console.log('Current chat ID:', currentChatId);
     return <div className="flex items-center justify-center h-screen bg-gray-950 text-white">Loading...</div>;
   }
+
+  console.log('Rendering with currentChat:', currentChat);
 
   return (
     <div className="flex flex-col h-screen bg-gray-950 overflow-hidden">
@@ -137,13 +151,14 @@ function ChatApp() {
       </div>
 
       {/* Chat Control Box */}
-      <div className="flex-shrink-0 px-2">
+      <div className="flex-shrink-0 w-full px-4 pb-2">
         <ChatControlBox
           menuDropdown={<MenuDropdown />}
           settingsDropdown={<SettingsDropdown />}
           onNewChatClick={createChat}
           onModelsToggle={() => setSelectedModels(prev => prev === 0 ? 1 : 0)}
           onPresetsClick={handlePresetsClick}
+          onSaveClick={handleSaveClick}
           onFileUpload={handleFileUpload}
           inputMessage={inputMessage}
           onInputChange={setInputMessage}

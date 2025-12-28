@@ -167,6 +167,7 @@ const ChatControlBox = ({
   onModelsToggle,
   onPresetsClick,
   onFileUpload,
+  onSaveClick,
 
   // Input props
   inputMessage,
@@ -251,14 +252,10 @@ const ChatControlBox = ({
 
   return (
     <div
-      className="bg-gray-900 border border-gray-800 rounded-2xl overflow-visible mx-auto"
+      className="bg-gray-900 border border-gray-800 rounded-2xl overflow-visible w-full max-w-full"
       style={{
         padding: `${dimensions.containerPadding}px`,
-        marginTop: `${dimensions.gap}px`,
-        marginBottom: `${dimensions.gap}px`,
-        boxSizing: 'border-box',
-        width: `calc(100% - ${dimensions.gap * 2}px)`,
-        maxWidth: '100%'
+        boxSizing: 'border-box'
       }}
     >
       {/* Toolbar */}
@@ -353,14 +350,19 @@ const ChatControlBox = ({
           )}
         </div>
 
-        {/* Save Indicator */}
-        <div
-          className={`flex items-center justify-center ${isSaved ? 'text-green-400' : 'text-gray-600'}`}
-          style={{ height: `${dimensions.toolbarIconButton}px`, width: `${dimensions.toolbarIconButton}px` }}
-          title={isSaved ? 'Chat is saved' : 'Not saved'}
-        >
-          <Save style={{ height: `${dimensions.toolbarIcon}px`, width: `${dimensions.toolbarIcon}px` }} />
-        </div>
+        {/* Save Button */}
+        {onSaveClick && (
+          <Button
+            onClick={onSaveClick}
+            disabled={isSaved || messageCount === 0}
+            variant="minimal-ghost"
+            className={isSaved ? 'text-green-400' : 'text-gray-600'}
+            style={{ height: `${dimensions.toolbarIconButton}px`, width: `${dimensions.toolbarIconButton}px` }}
+            title={isSaved ? 'Chat is saved' : 'Save chat'}
+          >
+            <Save style={{ height: `${dimensions.toolbarIcon}px`, width: `${dimensions.toolbarIcon}px` }} />
+          </Button>
+        )}
 
         {/* Presets */}
         {onPresetsClick && (

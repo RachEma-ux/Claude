@@ -15,7 +15,6 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
 }
 
 code {
@@ -24,8 +23,9 @@ code {
 }
 
 #root {
-  width: 100%;
+  width: 100vw;
   height: 100vh;
+  overflow: hidden;
 }
 
 /* Custom Scrollbar Styles */
