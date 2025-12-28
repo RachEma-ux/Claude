@@ -120,9 +120,17 @@ const Button = ({ children, onClick, disabled = false, variant = 'default', clas
     ? "hover:bg-gray-800 text-gray-400"
     : "bg-gray-700 hover:bg-gray-600 text-gray-200 border border-gray-600";
 
+  const handleClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onClick && !disabled) {
+      onClick(e);
+    }
+  };
+
   return (
     <button
-      onClick={onClick}
+      onClick={handleClick}
       disabled={disabled}
       className={`${baseClass} ${variantClass} ${className}`}
       style={style}

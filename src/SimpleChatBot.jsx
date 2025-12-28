@@ -77,6 +77,12 @@ function ChatApp() {
     }
   };
 
+  const handleNewChatClick = () => {
+    console.log('Plus button clicked - creating new chat');
+    createChat();
+    console.log('New chat created');
+  };
+
   // Safety check for currentChat
   if (!currentChat) {
     console.error('CurrentChat is null/undefined!');
@@ -159,7 +165,7 @@ function ChatApp() {
         <ChatControlBox
           menuDropdown={<MenuDropdown />}
           settingsDropdown={<SettingsDropdown />}
-          onNewChatClick={createChat}
+          onNewChatClick={handleNewChatClick}
           onModelsToggle={() => setSelectedModels(prev => prev === 0 ? 1 : 0)}
           onPresetsClick={handlePresetsClick}
           onSaveClick={handleSaveClick}
