@@ -14,6 +14,14 @@ A responsive React chatbot application with proportionality-based layout system,
 install.bat
 ```
 
+### For Android (Termux):
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+📱 **[Full Termux Installation Guide →](TERMUX_INSTALL.md)**
+
 **That's it!** The script will:
 - ✅ Check for Node.js and npm
 - ✅ Install all dependencies
@@ -62,6 +70,12 @@ To check if you have them installed:
 node -v
 npm -v
 ```
+
+### For Android (Termux)
+
+1. Install Termux from [F-Droid](https://f-droid.org/packages/com.termux/)
+2. Run: `pkg install nodejs git`
+3. Follow the [Termux Installation Guide](TERMUX_INSTALL.md)
 
 ---
 
@@ -224,6 +238,8 @@ Edit the SVG path in `SendIcon` component:
 - ✅ Firefox (latest)
 - ✅ Safari (latest)
 - ✅ Edge (latest)
+- ✅ Android browsers (Chrome, Firefox)
+- ✅ Works in Termux on Android
 
 ---
 
