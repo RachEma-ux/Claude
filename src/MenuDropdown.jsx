@@ -96,7 +96,7 @@ Newest Chat: ${analytics.newestChat}
   };
 
   return (
-    <div className="absolute left-0 bottom-full mb-1 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-[9998] overflow-hidden">
+    <div className="absolute left-0 bottom-full mb-4 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-[9998] overflow-hidden">
       {/* Main Actions */}
       <div className="py-1">
         <button
