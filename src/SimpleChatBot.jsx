@@ -124,11 +124,11 @@ function ChatApp() {
               <div className="mt-8 text-left max-w-md mx-auto bg-gray-800 rounded-lg p-6 text-sm">
                 <h3 className="font-semibold text-white mb-3">✨ Features:</h3>
                 <ul className="space-y-2 text-gray-300">
+                  <li>• <strong>Smart Naming:</strong> Chats automatically named from your first message</li>
                   <li>• <strong>Chat Management:</strong> Create, rename, save, and archive chats</li>
                   <li>• <strong>Recent Conversations:</strong> Quick access to your recent chats</li>
                   <li>• <strong>Analytics:</strong> View detailed chat statistics</li>
                   <li>• <strong>Export/Import:</strong> Backup and restore your chat data</li>
-                  <li>• <strong>Auto-Save:</strong> Toggle automatic chat saving</li>
                   <li>• <strong>File Upload:</strong> Attach files to your messages</li>
                 </ul>
               </div>

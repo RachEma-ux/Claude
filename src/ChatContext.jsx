@@ -1,9 +1,30 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
+// Helper function to generate chat name from message content
+const generateChatNameFromMessage = (messageContent) => {
+  if (!messageContent || messageContent.trim().length === 0) {
+    return 'New Chat';
+  }
+
+  // Clean and truncate the message
+  let name = messageContent
+    .trim()
+    .replace(/\n+/g, ' ') // Replace newlines with spaces
+    .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+    .substring(0, 50); // Limit to 50 characters
+
+  // Add ellipsis if truncated
+  if (messageContent.trim().length > 50) {
+    name += '...';
+  }
+
+  return name;
+};
+
 // Data structure for a single chat
 const createNewChat = (name = null) => ({
   id: `chat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-  name: name || `Chat ${new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}`,
+  name: name || 'New Chat',
   messages: [],
   createdAt: Date.now(),
   updatedAt: Date.now(),
@@ -137,8 +158,17 @@ export const ChatProvider = ({ children }) => {
     setChats(prev => prev.map(chat => {
       if (chat.id === currentChatId) {
         const updatedMessages = [...chat.messages, message];
+
+        // Auto-generate chat name from first user message
+        let newName = chat.name;
+        if (chat.name === 'New Chat' && message.role === 'user' && updatedMessages.length === 1) {
+          newName = generateChatNameFromMessage(message.content);
+          console.log('Auto-generated chat name:', newName);
+        }
+
         return {
           ...chat,
+          name: newName,
           messages: updatedMessages,
           messageCount: updatedMessages.length,
           updatedAt: Date.now(),
