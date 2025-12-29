@@ -48,7 +48,7 @@ const SettingsDropdown = ({ onClose }) => {
   };
 
   return (
-    <div className="absolute right-0 top-full mt-1 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-[9998] overflow-visible">
+    <div className="absolute right-0 bottom-full mb-1 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-[9998] overflow-visible">
       <div className="py-1">
         {/* Auto-Save Toggle */}
         <button
